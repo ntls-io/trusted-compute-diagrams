@@ -1,0 +1,25 @@
+@startuml SystemContext
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+!include context_style.pum
+
+skinparam dpi 300
+
+title System Context diagram for Registree Trusted Compute
+
+Person(dataProvider, "Data Provider", "Owner or custodian of a set of sensitive data")
+Person(codeProvider, "Code Provider", "Developers that create code that will run inside of a trusted runtime")
+Person(executor, "Execution Initiator / Result Receiver", "Initiates requests to run a specific body of code on a set of data")
+
+System(rtcData, "Data Management System", "Allows data owners to upload data to a trusted environment, and set conditions under which the data is allowed to be shared to computations")
+
+System(rtcExecution, "Code Execution System", "Allows code providers to share WASM binaries that will run in a sandboxed runtime in a trusted environment")
+
+Rel(dataProvider, rtcData, "Shares data and manages execution tokens for uploaded data")
+Rel(codeProvider, rtcExecution, "Shares WASM binaries that can process data")
+Rel(executor, rtcExecution, "Requests execution using an execution token and retrieve results")
+
+Rel_L(rtcExecution, rtcData, "Retrieves data corresponding to an execution token")
+
+SHOW_DYNAMIC_LEGEND()
+
+@enduml

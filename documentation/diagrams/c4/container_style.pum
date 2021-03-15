@@ -1,0 +1,17 @@
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+!include context_style.pum
+!define DEVICONS https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/devicons
+!define DEVICONS2 https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/devicons2
+!define FONTAWESOME https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/font-awesome-5
+!include FONTAWESOME/database.puml
+!include FONTAWESOME/lock.puml
+!include DEVICONS/rust.puml
+!include DEVICONS2/vuejs.puml
+
+
+
+!$COLOR_CONTAINER = "#f1f1f6"
+!$COLOR_CONTAINER_BORDER = "#28427B"
+
+
+UpdateSkinparamsAndLegendEntry("container", $bgColor=$COLOR_CONTAINER, $fontColor=$FONT_COLOR_ALT, $borderColor=$COLOR_CONTAINER_BORDER)

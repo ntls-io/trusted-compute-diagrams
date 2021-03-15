@@ -1,0 +1,39 @@
+@startuml dataProvisioning
+!include style.pum
+skinparam dpi 300
+
+title Registree Trusted Compute - Data Provisioning flow
+
+box "Client Side"
+  actor "Data Provider" as dataProvider
+  participant "Web Application" as webApp
+end box
+participant "Data Service" as dataService
+box "Trusted"
+  participant "Data Enclave" as dataEnclave
+  participant "Authorization Enclave" as authEnclave
+end box
+database "Object Storage" as storage
+
+autonumber
+dataProvider -> webApp: Request Attestation
+webApp -> dataService: Request Attestation
+...Attestation flow ommitted for brevity...
+webApp <-- dataService: Return Attestation JWT
+dataProvider <- webApp: Display Attestation Result
+
+dataProvider -> webApp: Encrypt data \nand ephemeral key \nwith enclave key from JWT
+webApp -> dataService: Upload encrypted payload
+dataService -> dataEnclave: Deliver encrypted payload
+dataEnclave -> dataEnclave: Verify payload contents
+dataEnclave -> dataEnclave: Generate a password and \nunique key for the data set
+dataEnclave -> authEnclave: Share password hash + salt, \nhash of the data set and the unique key
+authEnclave -> authEnclave: Persist shared data
+dataEnclave <-- authEnclave: Confirm
+dataEnclave -> dataEnclave: Encrypt password and unique \nkey with ephemeral key.
+dataService <-- dataEnclave: Return encrypted payload \nand share unique key
+dataService -> storage: Persist encrypted data with the unique key
+webApp <-- dataService: Return encrypted payload
+dataProvider <-- webApp: Display decrypted \npassword and unqiue key
+
+@enduml

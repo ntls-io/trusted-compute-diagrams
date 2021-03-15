@@ -1,0 +1,42 @@
+@startuml ContainerExecution
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+!include container_style.pum
+
+skinparam dpi 300
+
+title Container Diagram for Registree Trusted Compute - Code Execution System
+
+Person(codeProvider, "Code Provider", "Developers that create code that will run inside a trusted runtime")
+Person(executor, "Execution Initiator / Result Receiver", "Initiates requests to run a specific body of code on a data set and view the execution results")
+Person_Ext(dataProvider, "Data Provider", "Owner or custodian of a sensitive data set. Can issue execution tokens that allows a specific binary to be executed on a specific data set.")
+
+System(rtcData, "Data Management System", "Provides data sealed for the execution enclave after establishing mutual attestation and verifying the provided execution token")
+
+System_Ext(executorSystem, "Executor System", "System that requests execution and read execution results programmatically")
+Boundary(rtcExecution, "Code Execution", "Software System") {
+
+  Container(webAppExecution, "Web Application", "Vuejs",  "SPA frontend used to upload WASM binaries, request execution of binaries using an execution token, and view execution results.", "vuejs")
+  Container(executionService, "Execution Service", "Rust", "Provides an API that can be used to upload binaries, retrieve execution results, and request execution on the execution enclave using execution tokens", "rust")
+  Container(executionEnclave, "Execution Enclave", "SGX Runtime", "Provides a sandboxed WASM runtime inside an enclave used to perform computations on sensitive data sets.", "lock")
+  Container(objectStorage, "Object Storage", "e.g. S3", "Provides storage for WASM binaries and execution results", "database")
+}
+
+Rel(codeProvider, webAppExecution, "Uses", "HTTP")
+Rel(executor, webAppExecution, "Uses", "HTTP")
+Rel_L(dataProvider, executor, "Issue execution token")
+Rel(dataProvider, executorSystem, "Issue execution token")
+
+Rel(executorSystem, executionService, "Uses", "HTTP/REST API")
+
+Rel(webAppExecution, executionService, "Uses", "HTTP/REST API")
+
+Rel(executionService, rtcData, "Uses", "HTTP/REST API")
+Rel(executionService, executionEnclave, "Uses", "ECALLs")
+Rel(executionService, objectStorage, "Queries", "e.g. AWS SDK")
+
+Lay_R(codeProvider, executor)
+
+
+SHOW_DYNAMIC_LEGEND()
+
+@enduml

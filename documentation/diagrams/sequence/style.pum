@@ -1,0 +1,34 @@
+<style>
+sequenceDiagram {
+  box {
+    LineColor #efeff7
+    BackGroundColor #f1f1f6
+  }
+  arrow {
+    LineColor #e6453f
+  }
+  lifeLine {
+    LineColor #e6453f
+  }
+
+  actor {
+    LineColor #6cbf22
+    BackGroundColor #fffff
+  }
+
+  database {
+    LineColor #6cbf22
+    BackGroundColor #fffff
+  }
+
+  participant {
+    LineColor #6cbf22
+    BackGroundColor #fffff
+  }
+  .azure {
+    LineColor #28427b
+  }
+}
+</style>
+
+skinparam shadowing false

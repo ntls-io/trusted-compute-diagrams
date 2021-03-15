@@ -1,0 +1,66 @@
+@startuml execution
+!include style.pum
+
+skinparam dpi 200
+
+title Registree Trusted Compute - Execution flow
+
+box "Client Side"
+  actor "Execution Initiator" as executor
+  participant "Web Application" as webApp
+end box
+participant "Execution Service" as executionService
+participant "Execution Enclave" as executionEnclave <<Trusted>>
+participant "Object Storage" as storage
+participant "Data Service" as dataService
+participant "Data Enclave" as dataEnclave <<Trusted>>
+participant "Authorization \nEnclave" as authEnclave <<Trusted>>
+
+executor -> webApp: Request execution with \ntoken and arguments
+webApp -> executionService: Request attestation
+...Attestation flow ommited for brevity...
+webApp <-- executionService: Return attestation JWT
+webApp -> webApp: Encrypt token \nand execution arguments
+webApp -> executionService: Request execution \nwith encrypted payload
+
+executionService -> dataService: Request attestation
+dataService -> dataEnclave: Request attestation
+dataService <-- dataEnclave: Return Report
+executionService <-- dataService: Return Quote
+executionService -> executionEnclave: Provide data enclave quote \nand execution payload
+executionEnclave -> executionEnclave: Verify data enclave quote
+executionEnclave -> executionEnclave: Decrypt and seal execution \ntoken for data enclave
+executionService <-- executionEnclave: Return sealed token, \nbinary hash and \nattestation report
+
+executionService -> dataService: Request data with sealed \ntoken and execution enclave \nquote
+
+dataService -> dataEnclave: Provide sealed token \nand execution enclave quote
+dataEnclave -> dataEnclave: Verify quote
+dataEnclave -> dataEnclave: Unseal and \nverify token
+dataEnclave -> dataService: Request data set by id
+dataService -> storage: Retrieve data set
+dataService <-- storage: Return data set
+dataEnclave <-- dataService: Return data set
+dataEnclave -> dataEnclave: Decrypt and verify \ndata set
+dataEnclave -> authEnclave: Record execution \ntoken use
+dataEnclave <-- authEnclave: Confirm validity \nand use
+dataEnclave -> dataEnclave: Seal data for \nexecution enclave
+
+dataService <-- dataEnclave: Return sealed data
+
+executionService <-- dataService: Return sealed data
+executionService -> storage: Request binary
+executionService <-- storage: Return binary
+executionService -> executionEnclave: Provide sealed data, \nbinary and encrypted \nexecution token
+executionEnclave -> executionEnclave: Validate execution \narguments and \n binary
+executionEnclave -> executionEnclave: Unseal data
+executionEnclave -> executionEnclave ++: Execute Binary
+executionService <-- executionEnclave --: Return results
+executionService -> executionEnclave !!: destroy
+
+webApp <-- executionService: Return results
+executor <-- webApp: Show results
+
+
+
+@enduml

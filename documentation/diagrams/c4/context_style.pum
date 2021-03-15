@@ -1,0 +1,14 @@
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+!global $FONT_COLOR = "#ffffff"
+!global $FONT_COLOR_ALT = "#15223e"
+
+!$COLOR_PERSON = "#6cbf22"
+!$COLOR_SYSTEM = "#366011"
+!$COLOR_PERSON_EXT = "#14213d"
+!$COLOR_SYSTEM_EXT = "#466ec3"
+
+UpdateSkinparamsAndLegendEntry("person", $bgColor=$COLOR_PERSON, $fontColor=$FONT_COLOR_ALT, $borderColor=$COLOR_PERSON)
+UpdateSkinparamsAndLegendEntry("system", $bgColor=$COLOR_SYSTEM, $fontColor=$FONT_COLOR, $borderColor=$COLOR_SYSTEM)
+UpdateSkinparamsAndLegendEntry("external_person", $bgColor=$COLOR_PERSON_EXT, $fontColor=$FONT_COLOR, $borderColor=$COLOR_PERSON_EXT )
+UpdateSkinparamsAndLegendEntry("external_system", $bgColor=$COLOR_SYSTEM_EXT, $fontColor=$FONT_COLOR, $borderColor=$COLOR_SYSTEM_EXT)

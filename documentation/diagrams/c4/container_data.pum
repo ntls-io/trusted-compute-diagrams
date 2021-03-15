@@ -1,0 +1,41 @@
+@startuml ContainerData
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+!include container_style.pum
+
+skinparam dpi 200
+
+title Container Diagram for Registree Trusted Compute - Data System
+
+Person(dataProvider, "Data Provider", "Owner or custodian of a sensitive data set")
+Person_Ext(codeProvider, "Code Provider", "Developers that create code that will run inside of a trusted runtime. The hash of the binary will be used to issue execution tokens.")
+
+Boundary(rtcData, "Data Management", "Software System") {
+  Container(webAppData, "Web Application", "Vuejs", "SPA frontend used to manage shared data, view attestations, upload data and issue execution tokens", "vuejs")
+
+  Container(authEnclave, "Authorization Enclave", "SGX Runtime", "Provides a trusted execution environment responsible for issuing, verifying, consuming and revoking execution tokens", "lock")
+  Container(dataEnclave, "Data Enclave", "SGX Runtime", "Provides a trusted execution environment that decrypts shared data and seal the data for the trusted execution service, after verifying the execution token and establishing mutual attestation", "lock")
+  Container(dataService, "Data Service", "Rust", "Provides an API that can be used to interact with the data and authorization enclave and store encrypted data", "rust")
+
+Container(objectStorage, "Object Storage", "e.g. S3", "Provides storage of data that have been encrypted and can only be accessed inside of the Data Enclave", "database")
+}
+
+
+System(rtcExecution, "Code Execution System", "Requests data sealed for a trusted environment using an execution token")
+
+Rel(dataProvider, webAppData, "Vistis", "HTTPS")
+
+Rel(webAppData, dataService, "Uses", "HTTPS/REST API")
+
+Rel(dataProvider, codeProvider, "Verify code and retrieve a hash of the binary")
+
+Rel(dataService, objectStorage, "Queries", "e.g. AWS SDK")
+Rel(dataService, dataEnclave, "Uses", "ECALLs")
+Rel(dataService, authEnclave, "Uses", "ECALLs")
+Rel(dataEnclave, authEnclave, "Uses (consume token)", "OCALLs")
+
+Rel(rtcExecution, dataService, "Uses", "HTTPS/REST API")
+
+
+SHOW_DYNAMIC_LEGEND()
+
+@enduml
