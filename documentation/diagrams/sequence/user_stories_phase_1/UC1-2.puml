@@ -1,0 +1,25 @@
+@startuml user chooses data schema
+!include style.pum
+skinparam dpi 300
+
+title Nautilus Trusted Compute - Choose schema for data packages
+
+box "Client Side"
+  actor "Data Provider" as dataProvider
+  participant "Nautilus Trusted Compute" as webApp
+end box
+participant "Data Service" as dataService
+database "Object Storage" as storage
+
+autonumber
+dataProvider -> webApp: Log in to dashboard
+dataProvider -> webApp: View uploaded personal \ndata packages
+webApp -> storage: Retrieve list of data packages
+webApp <-- storage: Return list of data packages
+webApp -> dataProvider: Display predefined schemas \nto be applied to data packages
+dataProvider -> webApp: Select and update schema \nof personal data packages
+webApp -> dataService: Update schema of data package
+dataService -> storage: Store schema metadata of data package
+
+
+@enduml

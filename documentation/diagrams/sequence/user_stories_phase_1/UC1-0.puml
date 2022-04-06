@@ -1,0 +1,28 @@
+@startuml UC1-0
+!include style.pum
+skinparam dpi 300
+
+title Nautilus Trusted Compute - Account creation and management
+
+actor "New User" as user
+participant "Nautilus Trusted Compute" as webApp
+database "Account Storage" as storage
+
+== Account creation ==
+user -> webApp: Sign up with name, email and password \nwith Auth0
+webApp -> webApp: Create fresh keypair
+webApp -> storage: Store public key with name, email and password
+user <-- webApp: Return public key
+
+== Update account info ==
+user -> webApp: Sign in with public key and email
+user -> webApp: Update account information
+webApp -> storage: Update account information
+user <-- webApp: User details updated
+
+== Account deletion ==
+user -> webApp: Sign in with public key and email
+user -> webApp: Delete account
+webApp -> storage: Remove user secret key and details
+
+@enduml

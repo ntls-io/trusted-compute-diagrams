@@ -1,0 +1,16 @@
+@startuml token
+!include style.pum
+
+skinparam dpi 300
+
+title Nautilus Trusted Compute - Code provisioning
+
+actor "Code Creator" as codeCreator
+participant "Analytics Marketplace" as marketplace
+database "Public Repository \n(ex. Github)" as github
+
+codeCreator -> github: Upload pre-compiled \nbinary and source code
+codeCreator -> marketplace: Provide metadata \n(like data schema) \nfor the code \nand link to source code
+
+
+@enduml
