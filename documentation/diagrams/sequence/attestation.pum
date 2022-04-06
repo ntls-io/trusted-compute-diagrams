@@ -4,10 +4,10 @@
 skinparam dpi 300
 skinparam BoxPadding 10
 
-title Registree Trusted Compute - Azure attestation flow
+title Nautilus Trusted Compute - Azure attestation flow
 
 actor "User" as user
-box "Registree"
+box "Nautilus"
   participant "Service" as service
   participant "App Enclave" as appEnclave
 end box

@@ -4,7 +4,7 @@
 
 skinparam dpi 200
 
-title Container Diagram for Registree Trusted Compute - Data System
+title Container Diagram for Nautilus Trusted Compute - Data System
 
 Person(dataProvider, "Data Provider", "Owner or custodian of a sensitive data set")
 Person_Ext(codeProvider, "Code Provider", "Developers that create code that will run inside of a trusted runtime. The hash of the binary will be used to issue execution tokens.")
