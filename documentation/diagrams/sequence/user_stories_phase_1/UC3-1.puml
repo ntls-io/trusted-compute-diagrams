@@ -1,5 +1,5 @@
 @startuml token
-!include style.pum
+!include style.puml
 
 skinparam dpi 300
 

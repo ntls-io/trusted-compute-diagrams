@@ -1,11 +1,11 @@
 @startuml attestation
 !include style.puml
 
-skinparam dpi 300
 skinparam BoxPadding 10
 
-title Nautilus Trusted Compute - Azure attestation flow
+'title Nautilus Trusted Compute - Azure attestation flow
 
+autonumber
 actor "User" as user
 box "Nautilus"
   participant "Service" as service
@@ -15,15 +15,17 @@ box "Azure"
   participant "Quoting Enclave" as quotingEnclave <<azure>>
   participant "Azure Attestation\nService" as azureAttestation <<azure>>
 end box
-user -> service: Request Attestation
+user -> service: Request attestation
 service -> quotingEnclave: Request target info
 service <-- quotingEnclave: Return target info
-service -> appEnclave: Request Report with target info
-service <-- appEnclave: Return Report and Public Key
-service -> quotingEnclave: Request quote with report
+service -> appEnclave: Request report with target info
+service <-- appEnclave: Return report and public pey
+service -> quotingEnclave: Request quote using report
 service <-- quotingEnclave: Return quote
 service -> azureAttestation: Verify quote with public key
-service <-- azureAttestation: Return signed attestation JWT
-user <-- service: Return attestation JWT
-user -> azureAttestation: Verify JWT
+service <-- azureAttestation: Return attestation token
+user <-- service: Return attestation token
+user -> azureAttestation: Request signing certificates
+azureAttestation --> user: Return signing certificates
+user -> user: Verify signature of attestion token
 @enduml

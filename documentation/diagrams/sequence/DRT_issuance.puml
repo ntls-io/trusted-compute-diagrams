@@ -1,0 +1,24 @@
+@startuml DRT Issuance
+!include style.puml
+
+skinparam dpi 300
+
+'title Nautilus Trusted Compute - DRT Issuance
+
+actor "Data Creators" as dataCreator
+participant "Vault App" as vaultApp
+'participant "Data Service" as dataService
+participant "Algorand Blockchain" as blockchain
+'participant "Code and Executable Repository" as repo
+actor "Third Party" as thirdParty
+
+dataCreator -> vaultApp: Issue DRT for data package
+dataCreator -> vaultApp: Provide all required metadata \nfor creation of DRT
+vaultApp -> blockchain: Create the DRT as an ASA \nwith relevant metadata \nand publish info
+
+thirdParty -> blockchain: Initiates trade of DRT(ASA)
+thirdParty -> blockchain: Pay agreed amount of \nAlgos for the DRT
+blockchain --> thirdParty: Transfer of the DRT
+
+
+@enduml

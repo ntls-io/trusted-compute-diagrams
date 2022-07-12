@@ -1,5 +1,5 @@
 @startuml UC1-0
-!include style.pum
+!include style.puml
 skinparam dpi 300
 
 title Nautilus Trusted Compute - Account creation and management

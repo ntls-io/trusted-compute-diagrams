@@ -1,0 +1,16 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+actor "Company A" << Code creator and \nThird Party>> as A
+actor "UCT" << Data Creator >> as UCT
+rectangle NTC {  
+  UCT --> (uploads data)
+  (provide code to be authorized and executed on data) <-- A
+  UCT --> (audit and authorize code and issue DRT)
+  UCT --> (transfer DRT on Algorand blockchain)
+  (transfer DRT on Algorand blockchain) --> A
+  (redeem DRT) <-- A
+  (code executes in Execution Enclave and returns results) --> A
+
+}
+@enduml

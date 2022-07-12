@@ -1,5 +1,5 @@
 @startuml user chooses data schema
-!include style.pum
+!include style.puml
 skinparam dpi 300
 
 title Nautilus Trusted Compute - Choose schema for data packages

@@ -1,9 +1,8 @@
 @startuml token
-!include style.pum
+!include style.puml
 
-skinparam dpi 300
-
-title Nautilus Trusted Compute - Code provisioning
+skinparam BoxPadding 10
+'title Nautilus Trusted Compute - Code provisioning
 
 actor "Code Creator" as codeCreator
 participant "Analytics Marketplace" as marketplace

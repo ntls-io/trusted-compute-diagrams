@@ -1,7 +1,7 @@
 <style>
 sequenceDiagram {
   box {
-    LineColor #efeff7
+    LineColor #ffffff
     BackGroundColor #f1f1f6
   }
   arrow {
@@ -12,17 +12,17 @@ sequenceDiagram {
   }
 
   actor {
-    LineColor #6cbf22
+    LineColor #003450
     BackGroundColor #fffff
   }
 
   database {
-    LineColor #6cbf22
+    LineColor #003450
     BackGroundColor #fffff
   }
 
   participant {
-    LineColor #6cbf22
+    LineColor #003450
     BackGroundColor #fffff
   }
   .azure {
@@ -32,3 +32,4 @@ sequenceDiagram {
 </style>
 
 skinparam shadowing false
+'skinparam classFontSize 10

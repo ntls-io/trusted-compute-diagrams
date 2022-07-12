@@ -1,5 +1,5 @@
 @startuml dataProvisioning
-!include style.pum
+!include style.puml
 skinparam dpi 300
 
 title Nautilus Trusted Compute - Data Provisioning flow

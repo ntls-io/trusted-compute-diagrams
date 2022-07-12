@@ -1,8 +1,7 @@
 @startuml dataProvisioning via webApp
-!include style.pum
-skinparam dpi 300
+!include style.puml
 
-title Nautilus Trusted Compute - Data Provisioning flow
+'title Nautilus Trusted Compute - Data Provisioning flow
 
 box "Client Side"
   actor "Data Creator" as dataCreator

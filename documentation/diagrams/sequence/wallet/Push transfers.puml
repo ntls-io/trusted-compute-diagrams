@@ -1,0 +1,39 @@
+@startuml push transfers
+!include style.puml
+
+title Nautilus Wallet - Push Transfers of CBDC Between Two Wallet Holders
+hide footbox
+autonumber
+
+actor "Retail User" as retailUser
+
+box "Wallet App"
+    participant "Connector App \nClient" as connectorApp
+    participant "Enclave Server" as enclaveServer
+    database "Sealed Storage" as sealedStorage
+end box
+
+participant "Ledger" as ledger
+
+retailUser -> connectorApp: Login using web/mobile \nwith wallet address and PIN
+connectorApp -> enclaveServer: Open wallet request
+enclaveServer -> sealedStorage: Retrieve sealed wallet
+sealedStorage --> enclaveServer: Sealed wallet retrieved
+enclaveServer --> connectorApp: Unseals wallet and return \nOpen wallet response
+connectorApp --> retailUser: Login ok
+connectorApp -> ledger: Get wallet data \nand balances
+ledger --> connectorApp: Wallet data and \nbalances retrieved
+connectorApp --> retailUser: Show wallet data\nand balances
+
+retailUser -> connectorApp: Initiate push payment by\ninputting CBDC amount and\nwallet address to pay
+connectorApp -> enclaveServer: Create unsigned transaction
+enclaveServer -> sealedStorage: Retrieve retail user\nsealed wallet
+sealedStorage --> enclaveServer: Sealed wallet retrieved
+enclaveServer -> enclaveServer: Unseal wallet and use\nblockchain key to sign\ntransaction
+enclaveServer --> connectorApp: Return signed transaction
+connectorApp -> ledger: Submit signed transaction
+ledger --> connectorApp: Payment transaction\n successful and return\n transaction results
+connectorApp --> retailUser: Display money sent and\ntransaction ID 
+
+
+@enduml

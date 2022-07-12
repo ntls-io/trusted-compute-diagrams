@@ -1,5 +1,5 @@
 @startuml execution
-!include style.pum
+!include style.puml
 
 skinparam dpi 200
 
