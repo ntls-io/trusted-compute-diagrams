@@ -1,21 +1,21 @@
-@startuml pull transfers
+@startuml obtaining CBDC using cash
 !include style.puml
-
-title Nautilus Wallet - Pull Transfers of CBDC Between Two Wallet Holders
+!pragma teoz true
+title Nautilus Wallet - Household Users Obtaining CBDC Using Cash
 hide footbox
 autonumber
 
-participant "Retail\nUser" as retailUser
-
+participant "Household\nUser" as houseUser
 
 box "Wallet App"
     participant "Connector App \nClient" as connectorApp
     participant "Enclave\nServer" as enclaveServer
     participant "Sealed \nStorage" as sealedStorage
 end box
-
-participant "Customer/\nSendor" as customer
+participant "Retail\nUser" as retailUser
 participant "Ledger\n" as ledger
+
+houseUser -> retailUser: Pay cash to \nexchange for\nCBDC
 
 retailUser -> connectorApp: Login using web/mobile \nwith wallet address and PIN
 connectorApp -> enclaveServer: Open wallet request
@@ -27,17 +27,26 @@ connectorApp -> ledger: Get wallet data \nand balances
 ledger --> connectorApp: Wallet data and \nbalances retrieved
 connectorApp --> retailUser: Show wallet data\nand balances
 
-retailUser -> connectorApp: Initiate pull payment by\ninputting CBDC amount to be\nreceived 
-connectorApp --> customer: Prompt sendor to input wallet\naddress and PIN
-customer -> connectorApp: Enter wallet credentials
+retailUser -> connectorApp: Initiate push payment to\nsend funds to household user
 connectorApp -> enclaveServer: Create unsigned transaction
-enclaveServer -> sealedStorage: Retrieve sendor's sealed\nwallet
+enclaveServer -> sealedStorage: Retrieve retail user\nsealed wallet
 sealedStorage --> enclaveServer: Sealed wallet retrieved
 enclaveServer -> enclaveServer: Unseal wallet and use\nblockchain key to sign\ntransaction
 enclaveServer --> connectorApp: Return signed transaction
 connectorApp -> ledger: Submit signed transaction
 ledger --> connectorApp: Payment transaction\n successful and return\n transaction results
-connectorApp --> retailUser: Display money received and\ntransaction ID 
+connectorApp --> retailUser: Display money sent and\ntransaction ID 
+
+houseUser -> connectorApp: Login using web/mobile \nwith wallet address and PIN
+connectorApp -> enclaveServer: Open wallet request
+enclaveServer -> sealedStorage: Retrieve sealed wallet
+sealedStorage --> enclaveServer: Sealed wallet retrieved
+enclaveServer --> connectorApp: Unseals wallet and return \nOpen wallet response
+connectorApp --> houseUser: Login ok
+connectorApp -> ledger: Get wallet data \nand balances
+ledger --> connectorApp: Wallet data and \nbalances retrieved
+connectorApp --> houseUser: Show wallet data and balances \n(newly bought CBDC funds will reflect\nin their balance)
+
 
 
 @enduml

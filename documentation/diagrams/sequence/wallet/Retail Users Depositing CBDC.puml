@@ -5,19 +5,19 @@ title Nautilus Wallet - Retail Users Obtaining CBDC Using Funds in their Commerc
 hide footbox
 autonumber
 
-actor "Retail User" as retailUser
+participant "Retail\nUser" as retailUser
 
 box "Nautilus"
     box "Wallet App"
         participant "Connector App \nClient" as connectorApp
-        participant "Enclave Server" as enclaveServer
-        database "Sealed Storage" as sealedStorage
+        participant "Enclave\nServer" as enclaveServer
+        participant "Sealed \nStorage" as sealedStorage
     end box
 
-    participant "CBDC Services" as CBDC
+    participant "CBDC\nServices" as CBDC
 end box
-participant "Ledger" as ledger
-participant "Payment Processor\n Service (e.g PayFast)" as PP
+participant "Ledger\n" as ledger
+participant "Payment Processor\n Service" as PP
 
 retailUser -> connectorApp: Login using web/mobile \nwith wallet address and PIN
 connectorApp -> enclaveServer: Open wallet request
@@ -33,7 +33,7 @@ retailUser -> connectorApp: Input CBDC\namount to buy
 connectorApp -> CBDC: Deposit funds request
 CBDC -> PP: Call external service
 PP --> retailUser: Redirect user to\npayment interface
-retailUser -> PP: Login to bank and authorize payment
+retailUser -> PP: Login to bank and\nauthorize payment
 PP --> CBDC: Payment successful
 CBDC -> ledger: Sign and submit CBDC\nasset transaction to\ndeposit CBDC amount
 ledger --> CBDC: Deposit transaction\nsuccessful
