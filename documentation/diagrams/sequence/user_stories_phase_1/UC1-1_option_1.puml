@@ -1,0 +1,28 @@
+@startuml dataProvisioning via webApp
+!include style.puml
+
+'title Nautilus Trusted Compute - Data Provisioning flow
+
+autonumber
+box "Client Side"
+  actor "Data Creator" as dataCreator
+  participant "Vault App" as webApp
+end box
+participant "Data Service" as dataService
+database "Azure Blob \nObject Storage" as storage
+
+dataCreator -> webApp: Request attestation
+webApp -> dataService: Request attestation
+...Attestation process ommitted for brevity...
+webApp <-- dataService: Return attestation token
+dataCreator <- webApp: Return attestation token
+
+dataCreator -> webApp: Verify schema of data is valid \nfor pre-defined schemas
+dataCreator <-- webApp: Data schema is valid
+
+dataCreator -> webApp: Create data package (seal dataset \n with public and private metadata)
+dataCreator -> webApp: Encrypt data package with public \nenclave key obtained from \nattestation token
+webApp -> dataService: Upload data package
+dataService -> storage: Save data package to storage
+
+@enduml

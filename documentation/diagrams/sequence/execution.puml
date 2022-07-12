@@ -1,9 +1,9 @@
 @startuml execution
-!include style.pum
+!include style.puml
 
 skinparam dpi 200
 
-title Registree Trusted Compute - Execution flow
+title Nautilus Trusted Compute - Execution flow
 
 box "Client Side"
   actor "Execution Initiator" as executor

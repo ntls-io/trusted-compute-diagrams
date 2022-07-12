@@ -4,7 +4,7 @@
 
 skinparam dpi 300
 
-title System Context diagram for Registree Trusted Compute
+title System Context diagram for Nautilus Trusted Compute
 
 Person(dataProvider, "Data Provider", "Owner or custodian of a set of sensitive data")
 Person(codeProvider, "Code Provider", "Developers that create code that will run inside of a trusted runtime")

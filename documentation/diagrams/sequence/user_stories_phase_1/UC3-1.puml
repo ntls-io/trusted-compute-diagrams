@@ -1,0 +1,28 @@
+@startuml token
+!include style.puml
+
+skinparam dpi 300
+
+title Nautilus Trusted Compute - Issuing Execution Token
+
+box "Client Side"
+  actor "User/Data Provider" as dataProvider
+  participant "Nautilus Trusted Compute" as webApp
+end box
+participant "Data Service" as dataService
+participant "Authorization Enclave" as authEnclave <<Trusted>>
+
+dataProvider -> webApp: Provide binary hash, \nunique key, \ndataset password, and \nother token information
+webApp -> webApp: Generate new ephemeral key
+webApp -> webApp: Encrypt token information \nand ephemeral key using \nthe enclave key from attestation
+webApp -> dataService: Request token using the \nencrypted payload
+dataService -> authEnclave: Relay encrypted payload
+authEnclave -> authEnclave: Decrypt payload
+authEnclave -> authEnclave: Verify token information
+authEnclave -> authEnclave: Generate token \nusing token info
+authEnclave -> authEnclave: Encrypt token with \nephemeral key
+dataService <-- authEnclave: Return encrypted token
+webApp <-- dataService: Return encrypted token
+dataProvider <-- webApp: Return decrypted token
+
+@enduml

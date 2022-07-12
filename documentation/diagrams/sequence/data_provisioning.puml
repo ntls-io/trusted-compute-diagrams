@@ -1,11 +1,11 @@
 @startuml dataProvisioning
-!include style.pum
+!include style.puml
 skinparam dpi 300
 
-title Registree Trusted Compute - Data Provisioning flow
+title Nautilus Trusted Compute - Data Provisioning flow
 
 box "Client Side"
-  actor "Data Provider" as dataProvider
+  actor "Data Creator" as dataCreator
   participant "Web Application" as webApp
 end box
 participant "Data Service" as dataService
@@ -16,13 +16,13 @@ end box
 database "Object Storage" as storage
 
 autonumber
-dataProvider -> webApp: Request Attestation
+dataCreator -> webApp: Request Attestation
 webApp -> dataService: Request Attestation
 ...Attestation flow ommitted for brevity...
 webApp <-- dataService: Return Attestation JWT
-dataProvider <- webApp: Display Attestation Result
+dataCreator <- webApp: Display Attestation Result
 
-dataProvider -> webApp: Encrypt data \nand ephemeral key \nwith enclave key from JWT
+dataCreator -> webApp: Encrypt data \nand ephemeral key \nwith enclave key from JWT
 webApp -> dataService: Upload encrypted payload
 dataService -> dataEnclave: Deliver encrypted payload
 dataEnclave -> dataEnclave: Verify payload contents
@@ -34,6 +34,6 @@ dataEnclave -> dataEnclave: Encrypt password and unique \nkey with ephemeral key
 dataService <-- dataEnclave: Return encrypted payload \nand share unique key
 dataService -> storage: Persist encrypted data with the unique key
 webApp <-- dataService: Return encrypted payload
-dataProvider <-- webApp: Display decrypted \npassword and unqiue key
+dataCreator <-- webApp: Display decrypted \npassword and unqiue key
 
 @enduml

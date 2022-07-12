@@ -1,0 +1,49 @@
+@startuml obtaining CBDC
+!include style.puml
+!pragma teoz true
+title Nautilus Wallet - Retail Users Obtaining CBDC Using Funds in their Commercial Bank Accounts
+hide footbox
+autonumber
+
+actor "Retail User" as retailUser
+
+box "Nautilus"
+    box "Wallet App"
+        participant "Connector App \nClient" as connectorApp
+        participant "Enclave Server" as enclaveServer
+        database "Sealed Storage" as sealedStorage
+    end box
+
+    participant "CBDC Services" as CBDC
+end box
+participant "Ledger" as ledger
+participant "Payment Processor\n Service (e.g PayFast)" as PP
+
+retailUser -> connectorApp: Login using web/mobile \nwith wallet address and PIN
+connectorApp -> enclaveServer: Open wallet request
+enclaveServer -> sealedStorage: Retrieve sealed wallet
+sealedStorage --> enclaveServer: Sealed wallet retrieved
+enclaveServer --> connectorApp: Unseals wallet and return \nOpen wallet response
+connectorApp --> retailUser: Login ok
+connectorApp -> ledger: Get wallet data \nand balances
+ledger --> connectorApp: Wallet data and \nbalances retrieved
+connectorApp --> retailUser: Show wallet data\nand balances
+
+retailUser -> connectorApp: Input CBDC\namount to buy
+connectorApp -> CBDC: Deposit funds request
+CBDC -> PP: Call external service
+PP --> retailUser: Redirect user to\npayment interface
+retailUser -> PP: Login to bank and authorize payment
+PP --> CBDC: Payment successful
+CBDC -> ledger: Sign and submit CBDC\nasset transaction to\ndeposit CBDC amount
+ledger --> CBDC: Deposit transaction\nsuccessful
+CBDC --> connectorApp: Return successful\ndeposit funds response
+
+connectorApp -> ledger: Get wallet data \nand balances
+ledger --> connectorApp: Wallet data and \nbalances retrieved
+connectorApp --> retailUser: Show wallet data\nand balances
+
+
+
+
+@enduml

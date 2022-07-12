@@ -4,7 +4,7 @@
 
 skinparam dpi 300
 
-title Container Diagram for Registree Trusted Compute - Code Execution System
+title Container Diagram for Nautilus Trusted Compute - Code Execution System
 
 Person(codeProvider, "Code Provider", "Developers that create code that will run inside a trusted runtime")
 Person(executor, "Execution Initiator / Result Receiver", "Initiates requests to run a specific body of code on a data set and view the execution results")
