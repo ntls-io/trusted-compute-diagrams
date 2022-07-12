@@ -5,15 +5,15 @@ title Nautilus Wallet - Push Transfers of CBDC Between Two Wallet Holders
 hide footbox
 autonumber
 
-actor "Retail User" as retailUser
+participant "Retail\nUser" as retailUser
 
 box "Wallet App"
     participant "Connector App \nClient" as connectorApp
-    participant "Enclave Server" as enclaveServer
-    database "Sealed Storage" as sealedStorage
+    participant "Enclave\nServer" as enclaveServer
+    participant "Sealed \nStorage" as sealedStorage
 end box
 
-participant "Ledger" as ledger
+participant "Ledger\n" as ledger
 
 retailUser -> connectorApp: Login using web/mobile \nwith wallet address and PIN
 connectorApp -> enclaveServer: Open wallet request
