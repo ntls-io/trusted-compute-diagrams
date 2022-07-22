@@ -1,0 +1,36 @@
+@startuml
+!include style.puml
+node "Frontend" {
+        [Vue.js] as vue
+        [Ionic] as ionic
+
+        vue --> ionic
+}
+
+node "Backend" {
+        [Actix Web] as web
+        [JSON] as json
+
+        package "Execution Service" {
+                [Intel SGX] as sgx
+                [WASM] as wasm
+        }
+
+        package "Authorization Service" {
+                [Algorand Blockchain] as algo
+                [Oracle Node] as oracle
+        }
+
+        web --> json
+        json --> sgx
+        sgx --> wasm
+
+        sgx -> oracle
+        oracle ..> algo
+}
+
+package "Meta" {
+        [Rust] as rust
+        [Typescript] as ts
+}
+@enduml
