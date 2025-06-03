@@ -1,1 +1,3 @@
 /out
+.DS_Store
+documentation/diagrams/sequence/ntls-whitepaper/pdf/*

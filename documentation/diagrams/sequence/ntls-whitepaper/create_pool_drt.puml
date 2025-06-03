@@ -1,0 +1,45 @@
+@startuml create_pool_drt
+!include style.puml
+
+skinparam BoxPadding 10
+
+actor "Data Provider" as C
+participant "Frontend Web App" as FWA
+participant "Solana Smart Contract" as SC
+participant "DevOps Microservice" as API
+participant "Trusted Execution Environment" as TEE
+
+C -> FWA: 1. Submit request (JSON Schema, JSON data)
+FWA -> FWA: 2. Perform schema validation
+
+alt Schema validation successful
+    FWA -> C: 3. Schema validation passed
+    C -> FWA: 4. Define pool and DRTs specifications (SHA256 hash, \n GitHub reference, amount, etc.)
+    
+    FWA -> SC: 5. Initialize pool using smart contract
+    activate SC
+    SC -> FWA: 6. New pool initialized on chain
+    deactivate SC
+
+    FWA -> API: 7. Request new enclave deployment
+    
+    API -> TEE: 8. Deploy new enclave instance
+    activate TEE
+    TEE -> API: 9. TEE deployed successfully
+    deactivate TEE
+    API -> FWA: 10. Return TEE instance details
+    
+    FWA -[#grey]-> TEE: <color:grey>11. (Optionally) Request TEE attestation</color>
+    TEE -[#grey]-> TEE: <color:grey>12. Perform attestation</color>
+    TEE -[#grey]-> FWA: <color:grey>13. Attestation result</color>
+
+    FWA -> TEE: 14. Upload data via an encrypted channel
+    TEE -> TEE: 15. Encrypt and store data locally
+    TEE -> FWA: 16. Return success
+    FWA -> C: 17. Pool creation complete
+    
+else Schema validation failed
+    FWA -> C: 3. Return validation error
+end
+
+@enduml
