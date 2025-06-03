@@ -47,7 +47,7 @@ for PUML_FILE in "$INPUT_DIR"/*.puml; do
   echo "Processing $BASENAME.puml …"
 
   # 4a) Generate SVG from the .puml
-  plantuml -tsvg "$PUML_FILE" &>/dev/null || true
+  plantuml -pagewidth 210mm -tsvg "$PUML_FILE" &>/dev/null || true
 
   # 4b) Check if PlantUML actually created the SVG
   if [ ! -f "$SVG_FILE" ]; then
