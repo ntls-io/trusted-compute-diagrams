@@ -10,29 +10,28 @@ participant "Trusted Execution Environment" as TEE
 participant "Oracle Node" as ON
 participant "Solana Blockchain" as SB
 
-FWA -[#grey]-> TEE: <color:grey>a. (Optionally) Request TEE attestation</color>
+FWA -[#grey]-> TEE: <color:grey>a. (Optionally) Request</color> \n <color:grey>TEE attestation</color>
 TEE -[#grey]-> TEE: <color:grey>b. Perform attestation</color>
 TEE -[#grey]-> FWA: <color:grey>c. Attestation result</color>
 
-C -> FWA: 1. Submit purchase request for ExecuteDRT token(s) \n for a specific pool (e.g. ExecuteMedianDRT)
-FWA -> SC: 2. Initiate ExecuteDRT transaction
+C -> FWA: 1. Submit purchase request for\nExecuteDRT token(s) for a specific\npool (e.g. ExecuteMedianDRT)
+FWA -> SC: 2. Initiate ExecuteDRT\ntransaction
 activate SC
-SC -> FWA: 3. Transaction executed successfully
+SC -> FWA: 3. Transaction executed\nsuccessfully
 deactivate SC
 
-
-C -> FWA: 4. Select pool for ExecuteDRT operation and \n initialize DRT redemption
-FWA -> SC: 5. Redeem ExecuteDRT using smart contract
+C -> FWA: 4. Select pool for ExecuteDRT\noperation and initialize\nDRT redemption
+FWA -> SC: 5. Redeem ExecuteDRT using\nsmart contract
 activate SC
-SC -> FWA: 6. ExecuteDRT redeemed successfully
+SC -> FWA: 6. ExecuteDRT redeemed\nsuccessfully
 deactivate SC
 
-FWA -> TEE: 7. Request DRT execution for pool
-TEE -> ON: 8. Request verification from Oracle Node(s)
-ON <-> SB: 9. Qeury Solana and verify DRT redemption \n (e.g. median, mean, etc.)
+FWA -> TEE: 7. Request DRT execution\nfor pool
+TEE -> ON: 8. Verify DRT redemption via\nOracle Node(s)
+ON <-> SB: 9. Query Solana and verify\nDRT redemption
 ON -> TEE: 10. Return verification result
-TEE -> TEE: 11. Unseal existing data, perform DRT operation \n (e.g. median, mean, etc.)
-TEE -> FWA: 12. Transfer result over encrypted channel
-FWA -> C: 12. ExecuteDRT operation result
+TEE -> TEE: 11. Unseal existing data,\nperform DRT operation
+TEE -> FWA: 12. Transfer result over\nencrypted channel
+FWA -> C: 13. ExecuteDRT operation result
 
 @enduml

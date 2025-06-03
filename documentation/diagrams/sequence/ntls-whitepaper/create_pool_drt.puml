@@ -9,34 +9,34 @@ participant "Solana Smart Contract" as SC
 participant "DevOps Microservice" as API
 participant "Trusted Execution Environment" as TEE
 
-C -> FWA: 1. Submit request (JSON Schema, JSON data)
+C -> FWA: 1. Submit request\n(JSON Schema, JSON data)
 FWA -> FWA: 2. Perform schema validation
 
 alt Schema validation successful
     FWA -> C: 3. Schema validation passed
-    C -> FWA: 4. Define pool and DRTs specifications (SHA256 hash, \n GitHub reference, amount, etc.)
+    C -> FWA: 4. Define pool and DRTs\nspecifications (SHA256 hash,\nGitHub reference, amount, etc.)
     
-    FWA -> SC: 5. Initialize pool using smart contract
+    FWA -> SC: 5. Initialize pool using\nsmart contract
     activate SC
-    SC -> FWA: 6. New pool initialized on chain
+    SC -> FWA: 6. New pool initialized\non chain
     deactivate SC
 
-    FWA -> API: 7. Request new enclave deployment
+    FWA -> API: 7. Request new enclave\ndeployment
     
-    API -> TEE: 8. Deploy new enclave instance
+    API -> TEE: 8. Deploy new enclave\ninstance
     activate TEE
-    TEE -> API: 9. TEE deployed successfully
+    TEE -> API: 9. TEE deployed\nsuccessfully
     deactivate TEE
-    API -> FWA: 10. Return TEE instance details
+    API -> FWA: 10. Return TEE instance\ndetails
     
-    FWA -[#grey]-> TEE: <color:grey>11. (Optionally) Request TEE attestation</color>
-    TEE -[#grey]-> TEE: <color:grey>12. Perform attestation</color>
-    TEE -[#grey]-> FWA: <color:grey>13. Attestation result</color>
+    FWA -[#grey]-> TEE: <color:grey>a. (Optionally) Request\n<color:grey>TEE attestation</color>
+    TEE -[#grey]-> TEE: <color:grey>b. Perform attestation</color>
+    TEE -[#grey]-> FWA: <color:grey>c. Attestation result</color>
 
-    FWA -> TEE: 14. Upload data via an encrypted channel
-    TEE -> TEE: 15. Encrypt and store data locally
-    TEE -> FWA: 16. Return success
-    FWA -> C: 17. Pool creation complete
+    FWA -> TEE: 11. Upload data via an\nencrypted channel
+    TEE -> TEE: 12. Encrypt and store\ndata locally
+    TEE -> FWA: 13. Return success
+    FWA -> C: 14. Pool creation complete
     
 else Schema validation failed
     FWA -> C: 3. Return validation error
