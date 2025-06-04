@@ -3,14 +3,14 @@
 
 skinparam BoxPadding 10
 
-actor "Data Provider" as C
-participant "Frontend Web App" as FWA
-participant "Solana Smart Contract" as SC
-participant "Trusted Execution Environment" as TEE
-participant "Oracle Node" as ON
-participant "Solana Blockchain" as SB
+actor "Data\n Provider" as C
+participant "Frontend\n Web App" as FWA
+participant "Solana\n Smart\n Contract" as SC
+participant "Trusted\n Execution\n Environment" as TEE
+participant "Oracle\n Node" as ON
+participant "Solana\n Blockchain" as SB
 
-FWA -[#grey]-> TEE: <color:grey>a. (Optionally) Request</color> \n <color:grey>TEE attestation</color>
+FWA -[#grey]-> TEE: <color:grey>a. (Optionally) Request TEE attestation</color>
 TEE -[#grey]-> TEE: <color:grey>b. Perform attestation</color>
 TEE -[#grey]-> FWA: <color:grey>c. Attestation result</color>
 
@@ -26,13 +26,13 @@ activate SC
 SC -> FWA: 6. ExecuteDRT redeemed\nsuccessfully
 deactivate SC
 
-FWA -> TEE: 7. Request DRT execution\nfor pool
+FWA -> TEE: 7. Request DRT execution for pool
 TEE -> ON: 8. Verify DRT redemption via\nOracle Node(s)
 ON -> SB: 9. Query Solana and verify\nDRT redemption
 SB -> ON: 10. Return DRT redemption\nstatus
 ON -> TEE: 11. Return verification result
 TEE -> TEE: 12. Unseal existing data,\nperform DRT operation
-TEE -> FWA: 13. Transfer result over\nencrypted channel
+TEE -> FWA: 13. Transfer result over encrypted channel
 FWA -> C: 14. ExecuteDRT operation result
 
 @enduml

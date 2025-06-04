@@ -1,47 +1,47 @@
 @startuml append_drt_user_story
 !include style.puml
 
-skinparam BoxPadding 10
+skinparam defaultFontSize 14
+skinparam BoxPadding 5
 
-actor "Data Provider" as C
-participant "Frontend Web App" as FWA
-participant "Solana Smart Contract" as SC
-participant "Trusted Execution Environment" as TEE
-participant "Oracle Node" as ON
-participant "Solana Blockchain" as SB
+actor "Data\nProvider" as C
+participant "Frontend\nWeb App" as FWA
+participant "Solana\nSmart\nContract" as SC
+participant "Trusted\nExecution\nEnvironment" as TEE
+participant "Oracle\nNode" as ON
+participant "Solana\nBlockchain" as SB
 
-FWA -[#grey]-> TEE: <color:grey>a. (Optionally) Request TEE\n<color:grey>attestaton</color>
+FWA -[#grey]-> TEE: <color:grey>a. (Optionally) Request TEE attestation</color>
 TEE -[#grey]-> TEE: <color:grey>b. Perform attestation</color>
 TEE -[#grey]-> FWA: <color:grey>c. Attestation result</color>
 
-
-C -> FWA: 1. Submit purchase request for\nAppendDRT token(s) for a specific pool
-FWA -> SC: 2. Initiate AppendDRT transaction
+C -> FWA: 1. Submit purchase\nrequest for AppendDRT\ntoken(s) for specific pool
+FWA -> SC: 2. Initiate AppendDRT\ntransaction
 activate SC
-SC -> FWA: 3. Transaction executed successfully
+SC -> FWA: 3. Transaction executed\nsuccessfully
 deactivate SC
 
-C -> FWA: 4. Select pool for AppendDRT operation\nand submit JSON data
+C -> FWA: 4. Select pool for\nAppendDRT operation\nand submit JSON data
 FWA -> FWA: 5. Perform schema validation
 
 alt Schema validation successful
-    FWA -> C: 6. Schema validation passed
-    C -> FWA: 7. Initialize AppendDRT redemption
-    FWA -> SC: 8. Redeem AppendDRT for pool on chain
+    FWA -> C: 6. Schema valiudation passed
+    C -> FWA: 7. Initialize AppendDRT\nredemption
+    FWA -> SC: 8. Redeem AppendDRT\nfor pool on chain
     activate SC
     SC -> SB: 9. Mint Ownership token(s)
-    SB -> C: 10. Ownership tokens(s)\n allocated
-    SC -> FWA: 11. AppendDRT redeemed successfully
+    SB -> C: 10. Ownership token(s) allocated
+    SC -> FWA: 11. AppendDRT redeemed\nsuccessfully
     deactivate SC
 
     FWA -> TEE: 12. Transfer data over encrypted channel
-    TEE -> ON: 13. Verify DRT redemption via\nOracle Node(s)
-    ON -> SB: 14. Query Solana and verify\nDRT redemption
-    SB -> ON: 15. Return DRT redemption\nstatus
-    ON -> TEE: 16. Return verification result
-    TEE -> TEE: 17. Unseal existing data, append, \n reseal (encrypt) data and store locally
+    TEE -> ON: 13. Verify DRT redemption\nvia Oracle Node(s)
+    ON -> SB: 14. Query Solana and\nverify DRT redemption
+    SB -> ON: 15. Return DRT\nredemption status
+    ON -> TEE: 16. Return verification\nresult
+    TEE -> TEE: 17. Unseal existing data,\nappend, reseal (encrypt)\ndata and store locally
     TEE -> FWA: 18. Return success
-    FWA -> C: 19. AppendDRT operation complete
+    FWA -> C: 19. AppendDRT completed
     
 else Schema validation failed
     FWA -> C: 6. Return validation error

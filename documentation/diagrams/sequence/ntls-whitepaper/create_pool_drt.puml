@@ -3,12 +3,12 @@
 
 skinparam BoxPadding 10
 
-actor "Data Provider" as C
-participant "Frontend Web App" as FWA
-participant "Solana Smart Contract" as SC
-participant "DevOps Microservice" as API
-participant "Trusted Execution Environment" as TEE
-participant "Solana Blockchain" as SB
+actor "Data\n Provider" as C
+participant "Frontend\n Web App" as FWA
+participant "Solana\n Smart\n Contract" as SC
+participant "DevOps\n Microservice" as API
+participant "Trusted\n Execution\n Environment" as TEE
+participant "Solana\n Blockchain" as SB
 
 C -> FWA: 1. Submit request\n(JSON Schema, JSON data)
 FWA -> FWA: 2. Perform schema validation
@@ -20,23 +20,23 @@ alt Schema validation successful
     FWA -> SC: 5. Initialize pool using\nsmart contract
     activate SC
     SC -> SB: 6. Mint Ownership token(s)
-    SB -> C: 7. Ownership tokens(s)\n allocated
+    SB -> C: 7. Ownership tokens(s) allocated
     SC -> FWA: 8. New pool initialized\non chain
     deactivate SC
 
-    FWA -> API: 9. Request new enclave\ndeployment
+    FWA -> API: 9. Request new enclave deployment
     
     API -> TEE: 10. Deploy new enclave\ninstance
     activate TEE
     TEE -> API: 11. TEE deployed\nsuccessfully
     deactivate TEE
-    API -> FWA: 12. Return TEE instance\ndetails
+    API -> FWA: 12. Return TEE instance details
     
-    FWA -[#grey]-> TEE: <color:grey>a. (Optionally) Request\n<color:grey>TEE attestation</color>
+    FWA -[#grey]-> TEE: <color:grey>a. (Optionally) Request TEE attestation</color>
     TEE -[#grey]-> TEE: <color:grey>b. Perform attestation</color>
     TEE -[#grey]-> FWA: <color:grey>c. Attestation result</color>
 
-    FWA -> TEE: 13. Upload data via an\nencrypted channel
+    FWA -> TEE: 13. Upload data via an  encrypted channel
     TEE -> TEE: 14. Encrypt and store\ndata locally
     TEE -> FWA: 15. Return success
     FWA -> C: 16. Pool creation complete
