@@ -28,10 +28,11 @@ deactivate SC
 
 FWA -> TEE: 7. Request DRT execution\nfor pool
 TEE -> ON: 8. Verify DRT redemption via\nOracle Node(s)
-ON <-> SB: 9. Query Solana and verify\nDRT redemption
-ON -> TEE: 10. Return verification result
-TEE -> TEE: 11. Unseal existing data,\nperform DRT operation
-TEE -> FWA: 12. Transfer result over\nencrypted channel
-FWA -> C: 13. ExecuteDRT operation result
+ON -> SB: 9. Query Solana and verify\nDRT redemption
+SB -> ON: 10. Return DRT redemption\nstatus
+ON -> TEE: 11. Return verification result
+TEE -> TEE: 12. Unseal existing data,\nperform DRT operation
+TEE -> FWA: 13. Transfer result over\nencrypted channel
+FWA -> C: 14. ExecuteDRT operation result
 
 @enduml

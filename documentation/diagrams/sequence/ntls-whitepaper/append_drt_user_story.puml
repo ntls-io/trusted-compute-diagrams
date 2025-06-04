@@ -29,16 +29,19 @@ alt Schema validation successful
     C -> FWA: 7. Initialize AppendDRT redemption
     FWA -> SC: 8. Redeem AppendDRT for pool on chain
     activate SC
-    SC -> FWA: 9. AppendDRT redeemed successfully
+    SC -> SB: 9. Mint Ownership token(s)
+    SB -> C: 10. Ownership tokens(s)\n allocated
+    SC -> FWA: 11. AppendDRT redeemed successfully
     deactivate SC
 
-    FWA -> TEE: 10. Transfer data over encrypted channel
-    TEE -> ON: 8. Verify DRT redemption via\nOracle Node(s)
-    ON <-> SB: 9. Query Solana and verify\nDRT redemption
-    ON -> TEE: 10. Return verification result
-    TEE -> TEE: 11. Unseal existing data, append, \n reseal (encrypt) data and store locally
-    TEE -> FWA: 12. Return success
-    FWA -> C: 13. AppendDRT operation complete
+    FWA -> TEE: 12. Transfer data over encrypted channel
+    TEE -> ON: 13. Verify DRT redemption via\nOracle Node(s)
+    ON -> SB: 14. Query Solana and verify\nDRT redemption
+    SB -> ON: 15. Return DRT redemption\nstatus
+    ON -> TEE: 16. Return verification result
+    TEE -> TEE: 17. Unseal existing data, append, \n reseal (encrypt) data and store locally
+    TEE -> FWA: 18. Return success
+    FWA -> C: 19. AppendDRT operation complete
     
 else Schema validation failed
     FWA -> C: 6. Return validation error

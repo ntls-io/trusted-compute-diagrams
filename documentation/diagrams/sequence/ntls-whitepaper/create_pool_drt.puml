@@ -8,6 +8,7 @@ participant "Frontend Web App" as FWA
 participant "Solana Smart Contract" as SC
 participant "DevOps Microservice" as API
 participant "Trusted Execution Environment" as TEE
+participant "Solana Blockchain" as SB
 
 C -> FWA: 1. Submit request\n(JSON Schema, JSON data)
 FWA -> FWA: 2. Perform schema validation
@@ -18,25 +19,27 @@ alt Schema validation successful
     
     FWA -> SC: 5. Initialize pool using\nsmart contract
     activate SC
-    SC -> FWA: 6. New pool initialized\non chain
+    SC -> SB: 6. Mint Ownership token(s)
+    SB -> C: 7. Ownership tokens(s)\n allocated
+    SC -> FWA: 8. New pool initialized\non chain
     deactivate SC
 
-    FWA -> API: 7. Request new enclave\ndeployment
+    FWA -> API: 9. Request new enclave\ndeployment
     
-    API -> TEE: 8. Deploy new enclave\ninstance
+    API -> TEE: 10. Deploy new enclave\ninstance
     activate TEE
-    TEE -> API: 9. TEE deployed\nsuccessfully
+    TEE -> API: 11. TEE deployed\nsuccessfully
     deactivate TEE
-    API -> FWA: 10. Return TEE instance\ndetails
+    API -> FWA: 12. Return TEE instance\ndetails
     
     FWA -[#grey]-> TEE: <color:grey>a. (Optionally) Request\n<color:grey>TEE attestation</color>
     TEE -[#grey]-> TEE: <color:grey>b. Perform attestation</color>
     TEE -[#grey]-> FWA: <color:grey>c. Attestation result</color>
 
-    FWA -> TEE: 11. Upload data via an\nencrypted channel
-    TEE -> TEE: 12. Encrypt and store\ndata locally
-    TEE -> FWA: 13. Return success
-    FWA -> C: 14. Pool creation complete
+    FWA -> TEE: 13. Upload data via an\nencrypted channel
+    TEE -> TEE: 14. Encrypt and store\ndata locally
+    TEE -> FWA: 15. Return success
+    FWA -> C: 16. Pool creation complete
     
 else Schema validation failed
     FWA -> C: 3. Return validation error
